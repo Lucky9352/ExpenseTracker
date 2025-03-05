@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="error-container">
+    <div class="error-card">
+        <div class="error-icon">⚠️</div>
+        <h1>500</h1>
+        <p class="error-title">Server Error</p>
+        <p class="error-message">Something went wrong on our end. Please try again later.</p>
+        <a href="{% url 'home' %}" class="error-button">
+            <span class="icon">🏠</span>
+            Return Home
+        </a>
+    </div>
+</div>
+
+<style>
+/* Reuse styles from 404.html */
+</style>
+{% endblock %} 

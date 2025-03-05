@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="expenses-container">
+    <div class="expenses-header">
+        <h1>Your Expenses</h1>
+        <a href="{% url 'add_expense' %}" class="add-button">
+            <span>➕</span> Add New
+        </a>
+    </div>
+
+    <div class="expenses-grid">
+        {% for expense in expenses %}
+        <div class="expense-card">
+            <div class="expense-header">
+                <div class="category-badge">{{ expense.category.name }}</div>
+                <div class="expense-actions">
+                    <a href="{% url 'edit_expense' expense.id %}" class="action-button edit">
+                        <span class="icon">✏️</span>
+                    </a>
+                    <a href="{% url 'delete_expense' expense.id %}" class="action-button delete">
+                        <span class="icon">🗑️</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="expense-amount">₹{{ expense.amount }}</div>
+            <div class="date">{{ expense.date|date:"M d, Y h:i A" }}</div>
+            
+            <div class="expense-details">
+                <p class="description">{{ expense.description }}</p>
+                
+                <div class="expense-meta">
+                    <span class="payment-method">
+                        <i class="payment-icon">💳</i>
+                        {{ expense.payment_method }}
+                    </span>
+                    
+                    {% if expense.is_recurring %}
+                    <span class="recurring-badge">
+                        <i class="recurring-icon">🔄</i> Recurring
+                    </span>
+                    {% endif %}
+                </div>
+
+                {% if expense.receipt_image %}
+                <div class="receipt-preview">
+                    <img src="{{ expense.receipt_image.url }}" alt="Receipt">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.expenses-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.expenses-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.add-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--primary);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.add-button:hover {
+    transform: translateY(-2px);
+    background: var(--primary-hover);
+}
+
+.expenses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.expense-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.expense-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--card-hover-shadow);
+    border-color: var(--primary);
+}
+
+.expense-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.category-badge {
+    background: var(--primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+}
+
+.expense-amount {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 1rem 0;
+}
+
+.description {
+    color: var(--text);
+    margin: 0.5rem 0;
+}
+
+.expense-meta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.payment-method, .recurring-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.receipt-preview {
+    margin-top: 1rem;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.receipt-preview img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.payment-icon, .recurring-icon {
+    font-size: 1.2rem;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-icon">✨</div>
+            <h1>Confirm Email</h1>
+            <p class="auth-subtitle">One last step to get started</p>
+        </div>
+
+        {% if confirmation %}
+            <form method="post" class="auth-form">
+                {% csrf_token %}
+                <p class="confirm-message">
+                    Please confirm that <strong>{{ confirmation.email_address.email }}</strong> is your email address.
+                </p>
+                <button type="submit" class="auth-button">
+                    <span class="icon">✅</span>
+                    Confirm Email
+                </button>
+            </form>
+        {% else %}
+            <div class="error-content">
+                <div class="error-icon">❌</div>
+                <p class="error-message">
+                    This confirmation link has expired or is invalid. Please request a new confirmation email.
+                </p>
+                <a href="{% url 'account_email' %}" class="auth-button secondary-button">
+                    <span class="icon">🔄</span>
+                    Request New Link
+                </a>
+            </div>
+        {% endif %}
+
+        <div class="auth-footer">
+            <a href="{% url 'account_login' %}" class="text-link">Return to Login</a>
+        </div>
+    </div>
+</div>
+
+<style>
+.confirm-message {
+    text-align: center;
+    color: var(--text);
+    margin: 2rem 0;
+    line-height: 1.6;
+}
+
+.error-content {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.error-content .error-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    animation: shake 0.5s ease-in-out;
+}
+
+.error-content .error-message {
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+}
+
+.text-link {
+    color: var(--primary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.text-link:hover {
+    text-decoration: underline;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+/* Reuse auth styles */
+.auth-container {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.1), rgba(var(--accent-rgb), 0.1));
+}
+
+.auth-card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: var(--card-shadow);
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+}
+
+.auth-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+</style>
+{% endblock %} 

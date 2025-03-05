@@ -1,0 +1,9 @@
+*.env
+.env.*
+1.sh
+__pycache__/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/

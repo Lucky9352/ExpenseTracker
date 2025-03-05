@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-icon">✉️</div>
+            <h1>Verify Your Email</h1>
+            <p class="auth-subtitle">Check your inbox to complete signup</p>
+        </div>
+
+        <div class="verification-content">
+            <p class="verification-message">
+                We've sent a verification email to <strong>{{ email }}</strong>. Please click the link in the email to activate your account.
+            </p>
+            
+            <div class="verification-steps">
+                <div class="step">
+                    <span class="step-icon">📧</span>
+                    <p>Check your inbox</p>
+                </div>
+                <div class="step">
+                    <span class="step-icon">🔍</span>
+                    <p>Look in spam folder if needed</p>
+                </div>
+                <div class="step">
+                    <span class="step-icon">✨</span>
+                    <p>Click the verification link</p>
+                </div>
+            </div>
+
+            <p class="resend-note">
+                Didn't receive the email? Check your spam folder or 
+                <a href="{% url 'account_email' %}">request a new one</a>
+            </p>
+        </div>
+
+        <div class="auth-footer">
+            <a href="{% url 'account_login' %}" class="auth-button secondary-button">
+                <span class="icon">👈</span>
+                Return to Login
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Reuse base auth container styles */
+.verification-content {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.verification-message {
+    color: var(--text);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.verification-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--input-bg);
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
+
+.step:hover {
+    transform: translateX(10px);
+}
+
+.step-icon {
+    font-size: 1.5rem;
+}
+
+.step p {
+    color: var(--text);
+    margin: 0;
+}
+
+.resend-note {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 2rem;
+}
+
+.resend-note a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.resend-note a:hover {
+    text-decoration: underline;
+}
+
+.secondary-button {
+    background: var(--input-bg);
+    color: var(--text);
+}
+
+.secondary-button:hover {
+    background: var(--hover);
+}
+
+/* Animation for email icon */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.auth-icon {
+    animation: float 2s ease-in-out infinite;
+}
+</style>
+{% endblock %} 

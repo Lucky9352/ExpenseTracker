@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="error-container">
+    <div class="error-card">
+        <div class="error-icon">🔒</div>
+        <h1>403</h1>
+        <p class="error-title">Access Denied</p>
+        <p class="error-message">You don't have permission to access this page.</p>
+        <a href="{% url 'home' %}" class="error-button">
+            <span class="icon">🏠</span>
+            Return Home
+        </a>
+    </div>
+</div>
+
+<style>
+/* Reuse styles from 404.html */
+</style>
+{% endblock %} 

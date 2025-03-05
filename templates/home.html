@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="welcome-header">
+    <h1>Welcome back, <span class="username">{{ request.user.username }}</span></h1>
+</div>
+
+<div class="dashboard-grid">
+    <div class="card stat-card">
+        <div class="stat-icon">📅</div>
+        <h3>Today's Expenses</h3>
+        <p class="amount">₹{{ today_expenses }}</p>
+    </div>
+    
+    <div class="card stat-card">
+        <div class="stat-icon">📊</div>
+        <h3>This Month</h3>
+        <p class="amount">₹{{ monthly_expenses }}</p>
+    </div>
+    
+    <div class="card action-card">
+        <div class="stat-icon">➕</div>
+        <h3>Quick Add</h3>
+        <a href="{% url 'add_expense' %}" class="button">Add Expense</a>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <div class="card recent-expenses">
+        <h3>Recent Expenses</h3>
+        <div class="expense-cards">
+            {% for expense in recent_expenses %}
+            <div class="mini-expense-card">
+                <div class="expense-icon">💰</div>
+                <div class="expense-details">
+                    <span class="category">{{ expense.category.name }}</span>
+                    <span class="amount">₹{{ expense.amount }}</span>
+                    <span class="date">{{ expense.date|date:"M d, g:i A" }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="card categories-summary">
+        <h3>Expenses by Category</h3>
+        <div class="category-cards">
+            {% for category in categories %}
+            <div class="mini-expense-card">
+                <div class="expense-icon">📊</div>
+                <div class="expense-details">
+                    <span class="category">{{ category.name }}</span>
+                    <span class="amount">₹{{ category.total }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+.welcome-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.username {
+    color: var(--primary);
+}
+
+.stat-card {
+    text-align: center;
+}
+
+.stat-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.action-card {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.button {
+    background: var(--primary);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(45,136,241,0.3);
+}
+
+.category-cards {
+    display: grid;
+    gap: 1rem;
+}
+
+.mini-expense-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--input-bg);
+    border-radius: 8px;
+    transition: var(--transition);
+}
+
+.mini-expense-card:hover {
+    transform: translateX(5px);
+    background: var(--hover);
+}
+
+.expense-icon {
+    font-size: 1.5rem;
+    background: var(--primary);
+    padding: 0.5rem;
+    border-radius: 8px;
+}
+
+.expense-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+</style>
+{% endblock %} 

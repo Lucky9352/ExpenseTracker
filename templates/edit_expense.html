@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="add-expense-container">
+    <div class="expense-form-wrapper">
+        <div class="form-header">
+            <h1>✏️ Edit Expense</h1>
+            <p class="subtitle">Update your expense details</p>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" class="modern-form">
+            {% csrf_token %}
+            
+            <div class="amount-input-container">
+                {{ form.amount }}
+            </div>
+
+            <div class="form-section">
+                <div class="input-group category-group">
+                    <label>
+                        <span class="icon">📁</span>
+                        Category
+                    </label>
+                    {{ form.category }}
+                </div>
+
+                <div class="input-group date-group">
+                    <label>
+                        <span class="icon">📅</span>
+                        Date
+                    </label>
+                    {{ form.date }}
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>
+                    <span class="icon">📝</span>
+                    Description
+                </label>
+                {{ form.description }}
+            </div>
+
+            <div class="form-section">
+                <div class="input-group payment-group">
+                    <label>
+                        <span class="icon">💳</span>
+                        Payment Method
+                    </label>
+                    {{ form.payment_method }}
+                </div>
+
+                <div class="input-group recurring-group">
+                    <label class="toggle-container">
+                        {{ form.is_recurring }}
+                        <span class="toggle-slider"></span>
+                        <span class="toggle-label">
+                            <span class="icon">🔄</span>
+                            Recurring Expense
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="input-group receipt-group">
+                <label>
+                    <span class="icon">📸</span>
+                    Receipt Image
+                </label>
+                <div class="receipt-upload-area" id="dropZone">
+                    <div class="upload-icon">📤</div>
+                    <p>Drag & drop your receipt or click to browse</p>
+                    {{ form.receipt_image }}
+                </div>
+                {% if expense.receipt_image %}
+                <div class="current-receipt">
+                    <p>Current Receipt:</p>
+                    <img src="{{ expense.receipt_image.url }}" alt="Current receipt">
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="submit-button">
+                    <span class="icon">✨</span>
+                    Update Expense
+                </button>
+                <a href="{% url 'expenses_list' %}" class="cancel-button">
+                    <span class="icon">❌</span>
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %} 

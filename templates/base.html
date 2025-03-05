@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker Pro</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="metallic-nav">
+        <div class="logo">
+            <a href="{% url 'home' %}" class="logo-link">
+                <h1>ExpenseTracker Pro</h1>
+            </a>
+        </div>
+        <ul>
+            <li><a href="{% url 'home' %}">Dashboard</a></li>
+            <li><a href="{% url 'expenses_list' %}">
+                <span class="icon">📋</span> View All
+            </a></li>
+            <li><a href="{% url 'add_expense' %}">
+                <span class="icon">➕</span> Add New
+            </a></li>
+            <li><a href="{% url 'monthly_report' %}">
+                <span class="icon">📊</span> Reports
+            </a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'account_logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'account_login' %}">Login</a></li>
+                <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

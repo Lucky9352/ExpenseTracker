@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-icon">👋</div>
+            <h1>See You Soon!</h1>
+            <p class="auth-subtitle">Are you sure you want to log out?</p>
+        </div>
+
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            <div class="logout-buttons">
+                <button type="submit" class="auth-button logout-button">
+                    <span class="icon">🚪</span>
+                    Sign Out
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+.logout-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.logout-button {
+    background: linear-gradient(45deg, var(--error), #ff6b6b);
+}
+
+.logout-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.cancel-button {
+    background: var(--input-bg);
+    color: var(--text);
+    text-decoration: none;
+    text-align: center;
+}
+
+.cancel-button:hover {
+    background: var(--hover);
+    transform: translateY(-2px);
+}
+
+/* Reusing auth styles from login page */
+.auth-container {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.1), rgba(var(--accent-rgb), 0.1));
+}
+
+.auth-card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.auth-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    animation: wave 2s infinite;
+}
+
+@keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(20deg); }
+}
+</style>
+{% endblock %} 

@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="report-container">
+    <div class="report-header">
+        <h1>📊 Monthly Expense Report</h1>
+        <div class="total-card">
+            <span class="total-label">Total Expenses</span>
+            <span class="total-amount">₹{{ total }}</span>
+        </div>
+    </div>
+
+    <div class="report-grid">
+        <div class="chart-section card">
+            <h2>Expense Distribution</h2>
+            <div class="chart-container">
+                <canvas id="expenseChart"></canvas>
+            </div>
+        </div>
+
+        <div class="stats-section card">
+            <h2>Quick Stats</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-icon">💰</span>
+                    <span class="stat-label">Highest Expense</span>
+                    <span class="stat-value">₹{{ highest_expense }}</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">📅</span>
+                    <span class="stat-label">Most Active Day</span>
+                    <span class="stat-value">{{ most_active_day }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="expenses-section card">
+            <h2>Recent Transactions</h2>
+            <div class="expenses-timeline">
+                {% for expense in expenses %}
+                <div class="timeline-item">
+                    <div class="timeline-date">{{ expense.date|date:"M d" }}</div>
+                    <div class="timeline-content">
+                        <div class="expense-category">{{ expense.category.name }}</div>
+                        <div class="expense-amount">₹{{ expense.amount }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('expenseChart').getContext('2d');
+    
+    // Get category data from Django template
+    const categoryData = [
+        {% for cat in category_expenses %}
+            {
+                name: "{{ cat.name }}",
+                amount: {{ cat.total|default:0 }}
+            },
+        {% endfor %}
+    ];
+    
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: categoryData.map(cat => cat.name),
+            datasets: [{
+                data: categoryData.map(cat => cat.amount),
+                backgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#9966FF',
+                    '#FF9F40'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        color: 'var(--text)'
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+
+<style>
+.report-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.report-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.report-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.total-card {
+    display: inline-flex;
+    flex-direction: column;
+    padding: 1.5rem 3rem;
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+}
+
+.total-label {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+}
+
+.total-amount {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.report-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--card-shadow);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--input-bg);
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    display: block;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.expenses-timeline {
+    margin-top: 1rem;
+}
+
+.timeline-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    border-left: 2px solid var(--primary);
+    margin-left: 1rem;
+    position: relative;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -0.5rem;
+    width: 1rem;
+    height: 1rem;
+    background: var(--primary);
+    border-radius: 50%;
+}
+
+.timeline-date {
+    min-width: 80px;
+    color: var(--text-muted);
+}
+
+.timeline-content {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.expense-category {
+    color: var(--text);
+    font-weight: 500;
+}
+
+.expense-amount {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.chart-container {
+    height: 300px;
+    margin: 1rem 0;
+}
+
+@media (max-width: 768px) {
+    .chart-container {
+        height: 250px;
+    }
+}
+</style>
+{% endblock %}
